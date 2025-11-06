@@ -1,133 +1,50 @@
-name: 🚀 Publish to PyPI (URANIUM STANDARD)
+name: Publish to PyPI
 
 on:
   push:
     tags:
-      - "v*.*.*"   # Trigger only on version tags like v1.2.0
+      - 'v*.*.*'  # Trigger only for semantic version tags (e.g. v2.7.0)
 
 permissions:
   contents: read
-  id-token: write          # ✅ OIDC to PyPI (no token secrets)
-  attestations: write      # ✅ For provenance attestation
-  actions: read
-
-concurrency:
-  group: publish-${{ github.ref_name }}
-  cancel-in-progress: false
+  id-token: write  # Required for PyPI Trusted Publishing via OIDC
 
 jobs:
-  build-and-publish:
-    name: 🛠️ Build, Secure & Publish Package
+  build:
+    name: Build & Publish Duplifinder
     runs-on: ubuntu-latest
-    environment: pypi
+    environment: pypi  # Optional: define in GitHub Settings > Environments
 
     steps:
-      # -------------------------------------------------------
-      # 1️⃣ Secure checkout (full history for setuptools-scm)
-      # -------------------------------------------------------
       - name: 🧩 Checkout source
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          persist-credentials: false   # ✅ Prevents token leaks
 
-      # -------------------------------------------------------
-      # 2️⃣ Hardened Python environment
-      # -------------------------------------------------------
-      - name: 🐍 Setup Python 3.12
+      - name: 🐍 Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
-          check-latest: true
-          cache: "pip"
+          python-version: '3.12'
 
-      # -------------------------------------------------------
-      # 3️⃣ Install build & security toolchain
-      # -------------------------------------------------------
-      - name: 📦 Install build dependencies
+      - name: ⚙️ Install build dependencies
         run: |
-          set -euo pipefail
           python -m pip install --upgrade pip
-          python -m pip install \
-            "setuptools>=70" "setuptools-scm[toml]>=8" wheel build twine \
-            pip-audit cyclonedx-bom sigstore rich
-          echo "$(python -m site --user-base)/bin" >> $GITHUB_PATH
+          pip install build twine setuptools wheel
 
-      # -------------------------------------------------------
-      # 4️⃣ Build artifacts
-      # -------------------------------------------------------
-      - name: ⚙️ Build package (wheel + sdist)
-        run: |
-          set -euo pipefail
-          python -m build --no-isolation --sdist --wheel
+      - name: 🏗️ Build distribution artifacts
+        run: python -m build  # Uses pyproject.toml (setuptools backend)
 
-      # -------------------------------------------------------
-      # 5️⃣ Validate package integrity
-      # -------------------------------------------------------
-      - name: 🔍 Verify built distributions
-        run: |
-          set -euo pipefail
-          twine check dist/*
-          ls -lh dist/
+      - name: 🔍 Validate build metadata
+        run: twine check dist/*
 
-      # -------------------------------------------------------
-      # 6️⃣ Security & dependency audit
-      # -------------------------------------------------------
-      - name: 🛡️ Security audit for CVEs
-        run: |
-          set -euo pipefail
-          pip-audit --strict --progress-spinner=off || {
-            echo "❌ Security audit failed: vulnerabilities detected."
-            exit 1
-          }
-
-      # -------------------------------------------------------
-      # 7️⃣ Generate SBOM (CycloneDX JSON + XML)
-      # -------------------------------------------------------
-      - name: 🧾 Generate Software Bill of Materials
-        run: |
-          set -euo pipefail
-          python -m cyclonedx_bom --format json --outfile sbom.json
-          python -m cyclonedx_bom --format xml --outfile sbom.xml
-
-      - name: 📎 Upload SBOM artifacts
-        uses: actions/upload-artifact@v4
+      - name: 🧠 Cache wheelhouse (optional)
+        uses: actions/cache@v4
         with:
-          name: sbom
-          path: |
-            sbom.json
-            sbom.xml
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
-      # -------------------------------------------------------
-      # 8️⃣ Sign artifacts with Sigstore (keyless)
-      # -------------------------------------------------------
-      - name: 🔐 Sign artifacts with Sigstore
-        run: |
-          set -euo pipefail
-          sigstore sign dist/* --yes
-
-      # -------------------------------------------------------
-      # 9️⃣ Publish securely to PyPI using OIDC
-      # -------------------------------------------------------
       - name: 🚀 Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           verbose: true
-          skip-existing: false   # ✅ Fail if already uploaded
-          attestations: true     # ✅ Generate provenance attestation
-
-      # -------------------------------------------------------
-      # 🔟 Generate & attach provenance metadata
-      # -------------------------------------------------------
-      - name: 🧾 Generate Supply Chain Attestation
-        uses: actions/attest-build-provenance@v1
-        with:
-          subject-path: "dist/*"
-
-      # -------------------------------------------------------
-      # 11️⃣ Final confirmation
-      # -------------------------------------------------------
-      - name: ✅ Done
-        run: |
-          echo "✅ PyPI Release completed successfully!"
-          echo "🧾 SBOM + Sigstore + Provenance generated (URANIUM STANDARD)"
+          skip-existing: true

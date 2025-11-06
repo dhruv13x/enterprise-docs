@@ -1,5 +1,10 @@
 # === Python / Virtual Environments ===
 
+*egg-info/
+_version.py
+dist/
+build/
+
 # special type
 safe_toolchain*.jso*
 *_progress.json

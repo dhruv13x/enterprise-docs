@@ -1,4 +1,4 @@
-name: 🚀 Publish to PyPI
+name: 🚀 Publish to PyPI (URANIUM STANDARD)
 
 on:
   push:
@@ -7,8 +7,8 @@ on:
 
 permissions:
   contents: read
-  id-token: write         # ✅ Enables OIDC to PyPI (no token secret required)
-  attestations: write     # ✅ Provenance support
+  id-token: write          # ✅ OIDC to PyPI (no token secrets)
+  attestations: write      # ✅ For provenance attestation
   actions: read
 
 concurrency:
@@ -17,60 +17,117 @@ concurrency:
 
 jobs:
   build-and-publish:
-    name: 🛠️ Build & Publish Package
+    name: 🛠️ Build, Secure & Publish Package
     runs-on: ubuntu-latest
-    environment: pypi   # Optional: can enforce approvals if env protected
+    environment: pypi
 
     steps:
-      - name: 🧩 Checkout
+      # -------------------------------------------------------
+      # 1️⃣ Secure checkout (full history for setuptools-scm)
+      # -------------------------------------------------------
+      - name: 🧩 Checkout source
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # ✅ Required for setuptools-scm to detect git tags
+          fetch-depth: 0
+          persist-credentials: false   # ✅ Prevents token leaks
 
-      - name: 🐍 Set up Python
+      # -------------------------------------------------------
+      # 2️⃣ Hardened Python environment
+      # -------------------------------------------------------
+      - name: 🐍 Setup Python 3.12
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          check-latest: true
+          cache: "pip"
 
-      - name: 📦 Install modern build tools
+      # -------------------------------------------------------
+      # 3️⃣ Install build & security toolchain
+      # -------------------------------------------------------
+      - name: 📦 Install build dependencies
         run: |
+          set -euo pipefail
           python -m pip install --upgrade pip
-          python -m pip install "setuptools>=70" "setuptools-scm>=8" wheel build twine pip-audit cyclonedx-bom sigstore
+          python -m pip install \
+            "setuptools>=70" "setuptools-scm[toml]>=8" wheel build twine \
+            pip-audit cyclonedx-bom sigstore rich
+          echo "$(python -m site --user-base)/bin" >> $GITHUB_PATH
 
-      - name: ⚙️ Build artifacts (wheel + sdist)
-        run: python -m build
-
-      - name: 🔍 Verify built packages
-        run: twine check dist/*
-
-
-      - name: 🛡️ Security audit for known CVEs
-        run: pip-audit --strict
-
-      - name: 🧾 Generate SBOM (CycloneDX)
+      # -------------------------------------------------------
+      # 4️⃣ Build artifacts
+      # -------------------------------------------------------
+      - name: ⚙️ Build package (wheel + sdist)
         run: |
-          python -m pip install --upgrade cyclonedx-bom
-          cyclonedx-bom --format json --outfile sbom.json
+          set -euo pipefail
+          python -m build --no-isolation --sdist --wheel
 
-      - name: 📎 Upload SBOM artifact
+      # -------------------------------------------------------
+      # 5️⃣ Validate package integrity
+      # -------------------------------------------------------
+      - name: 🔍 Verify built distributions
+        run: |
+          set -euo pipefail
+          twine check dist/*
+          ls -lh dist/
+
+      # -------------------------------------------------------
+      # 6️⃣ Security & dependency audit
+      # -------------------------------------------------------
+      - name: 🛡️ Security audit for CVEs
+        run: |
+          set -euo pipefail
+          pip-audit --strict --progress-spinner=off || {
+            echo "❌ Security audit failed: vulnerabilities detected."
+            exit 1
+          }
+
+      # -------------------------------------------------------
+      # 7️⃣ Generate SBOM (CycloneDX JSON + XML)
+      # -------------------------------------------------------
+      - name: 🧾 Generate Software Bill of Materials
+        run: |
+          set -euo pipefail
+          python -m cyclonedx_bom --format json --outfile sbom.json
+          python -m cyclonedx_bom --format xml --outfile sbom.xml
+
+      - name: 📎 Upload SBOM artifacts
         uses: actions/upload-artifact@v4
         with:
           name: sbom
-          path: sbom.json
+          path: |
+            sbom.json
+            sbom.xml
 
-      - name: 🔐 Sign artifacts (Sigstore)
-        run: sigstore sign dist/* --yes
+      # -------------------------------------------------------
+      # 8️⃣ Sign artifacts with Sigstore (keyless)
+      # -------------------------------------------------------
+      - name: 🔐 Sign artifacts with Sigstore
+        run: |
+          set -euo pipefail
+          sigstore sign dist/* --yes
 
-      - name: 🚀 Publish to PyPI using OIDC
+      # -------------------------------------------------------
+      # 9️⃣ Publish securely to PyPI using OIDC
+      # -------------------------------------------------------
+      - name: 🚀 Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           verbose: true
-          skip-existing: false   # fail if version already exists (best practice)
+          skip-existing: false   # ✅ Fail if already uploaded
+          attestations: true     # ✅ Generate provenance attestation
 
-      - name: 🧾 Generate supply chain attestation
+      # -------------------------------------------------------
+      # 🔟 Generate & attach provenance metadata
+      # -------------------------------------------------------
+      - name: 🧾 Generate Supply Chain Attestation
         uses: actions/attest-build-provenance@v1
         with:
           subject-path: "dist/*"
 
+      # -------------------------------------------------------
+      # 11️⃣ Final confirmation
+      # -------------------------------------------------------
       - name: ✅ Done
-        run: echo "✅ Published to PyPI successfully!"
+        run: |
+          echo "✅ PyPI Release completed successfully!"
+          echo "🧾 SBOM + Sigstore + Provenance generated (URANIUM STANDARD)"

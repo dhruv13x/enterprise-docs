@@ -1,0 +1,50 @@
+name: 🚀 Publish to PyPI
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: read
+  id-token: write
+  attestations: write
+  actions: read
+
+jobs:
+  build-and-publish:
+    name: Build & Publish
+    runs-on: ubuntu-latest
+    environment: pypi
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install build tools
+        run: |
+          pip install build twine pip-audit cyclonedx-bom sigstore
+
+      - name: Build package
+        run: python -m build
+
+      - name: Verify build
+        run: twine check dist/*
+
+      - name: Security audit
+        run: pip-audit --strict
+
+      - name: Publish via OIDC
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          verbose: true
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: "dist/*"

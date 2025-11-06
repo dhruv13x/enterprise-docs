@@ -9,6 +9,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "enterprise-docs"
+version = "0.2.0"
 description = "Unified enterprise documentation suite for Dhruv13x organization — providing policy, compliance, and automation templates for enterprise-grade Python projects."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -40,9 +41,6 @@ classifiers = [
   "Typing :: Typed"
 ]
 
-# Dynamic version managed by setuptools-scm
-dynamic = ["version"]
-
 [tool.setuptools]
 package-dir = { "" = "src" }
 zip-safe = false
@@ -50,11 +48,6 @@ include-package-data = true
 
 [tool.setuptools.packages.find]
 where = ["src"]
-
-[tool.setuptools_scm]
-write_to = "src/enterprise_docs/_version.py"
-version_scheme = "release-branch-semver"
-local_scheme = "no-local-version"
 
 [project.optional-dependencies]
 dev = [

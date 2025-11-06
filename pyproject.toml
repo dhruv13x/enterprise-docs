@@ -1,10 +1,15 @@
 [build-system]
-requires = ["setuptools>=68", "wheel>=0.41", "build>=1.2"]
+requires = [
+  "setuptools>=70",
+  "setuptools_scm[toml]>=8",  # ✅ Critical: needed inside build env
+  "wheel>=0.41",
+  "build>=1.2"
+]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "enterprise-docs"
-
+dynamic = ["version"]
 description = "Unified enterprise documentation suite for Dhruv13x organization"
 readme = "README.md"
 requires-python = ">=3.10"

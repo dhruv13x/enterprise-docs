@@ -1,8 +1,11 @@
+# src/enterprise_docs/cli.py
+
 import argparse
 import shutil
 from pathlib import Path
 import importlib.resources as resources
 from importlib.metadata import version, PackageNotFoundError
+from .banner import print_logo
 
 
 def list_docs():
@@ -36,6 +39,7 @@ def show_version():
 
 
 def main():
+    print_logo()
     parser = argparse.ArgumentParser(
         description="Enterprise Docs Manager — manage and sync standard documentation templates."
     )

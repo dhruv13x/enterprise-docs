@@ -29,7 +29,7 @@ Security Lead | Technical response, patching |
 Comms Lead | Stakeholder messaging |
 Ops | Logs, infrastructure, SBOM updates |
 
-(For solo-maintainer mode: Dhruv plays all roles)
+(For solo-maintainer mode: Dhruv13x plays all roles)
 
 ---
 

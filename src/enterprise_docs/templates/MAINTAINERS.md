@@ -12,7 +12,7 @@ project policies, code quality, security practices, and guide contributors.
 
 | Name  | Role | Responsibilities |
 |-------|------|------------------|
-| Dhruv | Founder & Lead Maintainer | Final technical & security authority, release approvals, governance decisions |
+| Dhruv13x | Founder & Lead Maintainer | Final technical & security authority, release approvals, governance decisions |
 
 The Lead Maintainer has ultimate oversight and veto authority in case of conflict
 or security risk, following the governance model.
@@ -25,7 +25,7 @@ or security risk, following the governance model.
 
 | Name | GitHub | Responsibility Areas | Status |
 |------|--------|----------------------|--------|
-| Dhruv | https://github.com/dhruv13x | Core architecture, releases, security, CI/CD, roadmap | Active |
+| Dhruv13x | https://github.com/dhruv13x | Core architecture, releases, security, CI/CD, roadmap | Active |
 
 _No additional maintainers at this time._
 

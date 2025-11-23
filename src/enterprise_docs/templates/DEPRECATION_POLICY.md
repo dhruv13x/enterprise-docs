@@ -3,7 +3,7 @@
 This document defines the official policy for managing dependencies to ensure
 security, stability, reproducibility, and long-term maintainability.
 
-Maintainer: Dhruv  
+Maintainer: Dhruv13x  
 Applies to: All tools & libraries under this organization
 
 ---

@@ -12,7 +12,7 @@ the community while ensuring project stability and security.
 ## 👑 Project Leadership
 
 ### Project Lead / Maintainer of Record
-- **Name:** Dhruv *(Founder & Lead Maintainer)*  
+- **Name:** Dhruv13x *(Founder & Lead Maintainer)*  
 - **Role:** Final decision authority on technical direction, security posture,
   roadmap, and releases.
 

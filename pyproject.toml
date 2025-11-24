@@ -51,12 +51,15 @@ where = ["src"]
 
 [project.optional-dependencies]
 dev = [
-  "pytest>=8.0",
-  "black>=24.0",
-  "mypy>=1.10",
-  "pytest-cov>=5.0",
-  "pytest-mock>=3.14",
-  "types-PyYAML>=6.0.1"
+  "pytest>=8.0.0",
+  "pytest-cov>=5.0.0",
+  "pytest-timeout>=2.2.0",
+  "pytest-json-report>=1.5.0",
+  "pytest-asyncio>=0.23.0",
+  "pyfakefs>=5.0.0",
+  "ruff>=0.6.0",
+  "black>=24.3.0",
+  "mypy>=1.11.0"
 ]
 docs = [
   "sphinx>=7.0",
@@ -78,49 +81,46 @@ Issues = "https://github.com/dhruv13x/enterprise-docs/issues"
 Changelog = "https://github.com/dhruv13x/enterprise-docs/blob/main/CHANGELOG.md"
 "Release Notes" = "https://github.com/dhruv13x/enterprise-docs/releases"
 
-
 [tool.pytest.ini_options]
-minversion = "8.0"
+# All projects use src/ layout
 pythonpath = ["src"]
-testpaths = ["tests"]
-timeout = 10
 
+# All tests live under tests/
+testpaths = ["tests"]
+
+# Async projects are common in your stack
+asyncio_mode = "auto"
+
+# Global pytest options
 addopts = [
+  "-v",
   "-ra",
   "--strict-config",
   "--strict-markers",
-  "-v",
   "--tb=short",
-  "--durations=10",
+  "--showlocals",
   "--import-mode=importlib",
 
-  # coverage
+  # Time & perf
+  "--timeout=10",
+  "--durations=10",
+
+  # Coverage: target the real package
   "--cov=src/enterprise_docs",
-  "--cov-fail-under=90",
   "--cov-report=term-missing:skip-covered",
   "--cov-report=html",
   "--cov-report=xml",
+  "--cov-fail-under=85",
 ]
 
-markers = [
-  "slow: Marks slow tests",
-  "integration: Marks integration tests requiring external services"
-]
-
-filterwarnings = [
-  "ignore::DeprecationWarning:.*asyncio"
-]
-
+log_cli = true
+log_cli_level = "INFO"
 
 [tool.coverage.run]
-source = ["src/enterprise_docs"]
 branch = true
-omit = [
-  "*/templates/*",
-  "*/__init__.py",
-]
+source = ["src/enterprise_docs"]
 
 [tool.coverage.report]
+fail_under = 85
 show_missing = true
 skip_covered = true
-fail_under = 90

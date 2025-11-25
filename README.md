@@ -118,14 +118,7 @@ The core logic is contained in `cli.py`, which parses the command-line arguments
 
 ## 🗺️ Roadmap
 
-### Completed
-- [x] Core CLI with `list`, `sync`, and `version` commands.
-- [x] A comprehensive set of over 30 documentation templates.
-
-### Upcoming
-- [ ] Ability to sync individual templates.
-- [ ] Support for custom template directories.
-- [ ] Interactive mode for selecting templates.
+For a detailed view of our future plans, please see the [ROADMAP.md](ROADMAP.md) file.
 
 ---
 

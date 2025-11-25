@@ -40,4 +40,4 @@ def test_print_logo(mocker):
 
     # Verify the last call was the text
     args, _ = mock_console_print.call_args
-    assert "[dim]🧱 Unified collection of enterprise-grade documentation templates.[/dim]" in str(args[0])
+    assert "[dim]🏗️ Enforce documentation standards and consistency across enterprise projects.[/dim]" in str(args[0])

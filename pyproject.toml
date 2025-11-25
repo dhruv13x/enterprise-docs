@@ -28,6 +28,9 @@ keywords = [
   "compliance",
   "automation"
 ]
+dependencies = [
+  "rich>=13.0",
+]
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Developers",

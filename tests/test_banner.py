@@ -36,8 +36,29 @@ def test_print_logo(mocker):
     banner.print_logo()
 
     # print_logo calls console.print multiple times (once for each line of the logo + 1 for the text)
-    assert mock_console_print.call_count > 0
+    assert mock_console_print.call_count == 13
 
     # Verify the last call was the text
     args, _ = mock_console_print.call_args
-    assert "[dim]🧱 Unified collection of enterprise-grade documentation templates.[/dim]" in str(args[0])
+    assert "Enforce documentation standards and consistency across enterprise projects." in str(args[0])
+
+
+def test_print_logo_fixed_palette(mocker):
+    mocker.patch.dict('os.environ', {'CREATE_DUMP_PALETTE': '0'})
+    mock_console_print = mocker.patch.object(banner.console, 'print')
+    banner.print_logo()
+    assert mock_console_print.call_count == 13
+
+
+def test_print_logo_bad_palette_index(mocker):
+    mocker.patch.dict('os.environ', {'CREATE_DUMP_PALETTE': '999'})
+    mock_console_print = mocker.patch.object(banner.console, 'print')
+    banner.print_logo()
+    assert mock_console_print.call_count == 13
+
+
+def test_print_logo_procedural_palette(mocker):
+    mocker.patch.dict('os.environ', clear=True)
+    mock_console_print = mocker.patch.object(banner.console, 'print')
+    banner.print_logo()
+    assert mock_console_print.call_count == 13

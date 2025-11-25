@@ -17,6 +17,9 @@ license = { text = "MIT" }
 authors = [
   { name = "Dhruv", email = "dhruv13x@gmail.com" }
 ]
+dependencies = [
+  "rich>=13.0.0"
+]
 maintainers = [
   { name = "Dhruv", email = "dhruv13x@gmail.com" }
 ]

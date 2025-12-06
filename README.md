@@ -68,7 +68,8 @@ enterprise-docs sync --to ./docs
 
 - **God Level Template Library**: Access over 30 professional templates, including `SECURITY.md`, `GOVERNANCE.md`, and `CHANGELOG.md`.
 - **Single Source of Truth**: Standardize documentation across all your projects to ensure consistency and compliance.
-- **Effortless Synchronization**: A simple and intuitive CLI lets you sync all templates with a single command.
+- **Effortless Synchronization**: A simple and intuitive CLI lets you sync all templates or specific ones with a single command.
+- **Custom Sources**: Use your own local directories as sources for templates, allowing you to manage custom template libraries.
 - **Automation-Friendly**: Designed to be easily integrated into your CI/CD pipelines, keeping your documentation perpetually up-to-date.
 - **Fully Extensible**: While `enterprise-docs` provides a robust set of templates, you can easily add your own to the collection.
 
@@ -83,12 +84,23 @@ The `enterprise-docs` CLI offers the following commands and options:
 | Command     | Description                                     |
 |-------------|-------------------------------------------------|
 | `list`      | Lists all available documentation templates.    |
-| `sync`      | Copies all templates to a specified directory.  |
+| `sync`      | Copies templates to a specified directory.      |
 | `version`   | Displays the installed version of the package.  |
 
-| Option | Default  | Description                                  |
-|--------|----------|----------------------------------------------|
-| `--to` | `./docs` | The destination directory for the `sync` command. |
+| Option     | Default  | Description                                        |
+|------------|----------|----------------------------------------------------|
+| `--to`     | `./docs` | The destination directory for the `sync` command.  |
+| `--source` | `None`   | (Optional) Custom source directory for templates.  |
+
+To sync a specific template:
+```bash
+enterprise-docs sync MyTemplate.md
+```
+
+To use a custom source directory:
+```bash
+enterprise-docs sync --source ./my-templates
+```
 
 ---
 

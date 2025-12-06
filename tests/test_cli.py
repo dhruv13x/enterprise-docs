@@ -1,6 +1,5 @@
 # tests/test_cli.py
 
-
 import pytest
 import shutil
 import argparse
@@ -8,17 +7,7 @@ from pathlib import Path
 from unittest.mock import MagicMock, call
 from enterprise_docs import cli
 
-@pytest.fixture
-def mock_resources(mocker):
-    return mocker.patch("enterprise_docs.cli.resources")
-
-@pytest.fixture
-def mock_path(mocker):
-    return mocker.patch("enterprise_docs.cli.Path")
-
-@pytest.fixture
-def mock_shutil(mocker):
-    return mocker.patch("enterprise_docs.cli.shutil")
+# Fixtures are now in conftest.py
 
 def test_list_docs(mock_resources, capsys):
     # Mock resources.files return value
@@ -114,7 +103,11 @@ def test_main_sync(mocker):
     cli.main()
 
     mock_print_logo.assert_called_once()
-    mock_copy_docs.assert_called_once_with("custom_dir")
+    # Note: copy_docs signature will change, so this test might need update later if I change the signature in source code.
+    # But mock_copy_docs will just capture whatever arguments are passed.
+    mock_copy_docs.assert_called_once()
+    args, _ = mock_copy_docs.call_args
+    assert args[0] == "custom_dir"
 
 def test_main_version(mocker):
     mocker.patch("sys.argv", ["enterprise-docs", "version"])
@@ -134,4 +127,6 @@ def test_main_default_args(mocker):
 
     cli.main()
 
-    mock_copy_docs.assert_called_once_with("./docs")
+    mock_copy_docs.assert_called_once()
+    args, _ = mock_copy_docs.call_args
+    assert args[0] == "./docs"

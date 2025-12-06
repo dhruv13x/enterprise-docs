@@ -9,8 +9,8 @@ This document outlines the strategic vision for `enterprise-docs`, from immediat
 
 - [x] Core CLI with `list`, `sync`, and `version` commands.
 - [x] A comprehensive set of over 30 documentation templates.
-- [ ] **Sync Individual Templates**: Allow users to sync a single template instead of the entire library.
-- [ ] **Custom Template Directories**: Enable users to specify their own directories as a source for custom templates.
+- [x] **Sync Individual Templates**: Allow users to sync a single template instead of the entire library.
+- [x] **Custom Template Directories**: Enable users to specify their own directories as a source for custom templates.
 - [ ] **Interactive Mode**: An interactive mode for the `sync` command that allows users to select which templates to sync.
 - [ ] **Configuration File**: Introduce a `.enterprisedocsrc` file for project-level configuration of `enterprise-docs`.
 - [ ] **Improved Error Handling**: More robust error handling and reporting for CLI commands.

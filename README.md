@@ -1,141 +1,139 @@
-<div align="center">
-  <img src="https://raw.githubusercontent.com/dhruv13x/enterprise-docs/main/enterprise-docs_logo.png" alt="enterprise-docs logo" width="200"/>
-</div>
+# Enterprise Docs
 
-<div align="center">
+> Unified enterprise documentation suite for Dhruv13x organization — providing policy, compliance, and automation templates for enterprise-grade Python projects.
 
-# 🧱 Enterprise Docs
-
-**A unified collection of professional, enterprise-grade documentation templates for your projects — enabling consistent governance, security, and compliance across all repositories.**
-
-<!-- Package Info -->
-[![PyPI version](https://img.shields.io/pypi/v/enterprise-docs.svg)](https://pypi.org/project/enterprise-docs/)
-[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
-![Wheel](https://img.shields.io/pypi/wheel/enterprise-docs.svg)
-[![Release](https://img.shields.io/badge/release-PyPI-blue)](https://pypi.org/project/enterprise-docs/)
-
-<!-- Build & Quality -->
-[![Build status](https://github.com/dhruv13x/enterprise-docs/actions/workflows/publish.yml/badge.svg)](https://github.com/dhruv13x/enterprise-docs/actions/workflows/publish.yml)
-[![Codecov](https://codecov.io/gh/dhruv13x/enterprise-docs/graph/badge.svg)](https://codecov.io/gh/dhruv13x/enterprise-docs)
-[![Test Coverage](https://img.shields.io/badge/coverage-90%25%2B-brightgreen.svg)](https://github.com/dhruv13x/enterprise-docs/actions/workflows/test.yml)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Ruff](https://img.shields.io/badge/linting-ruff-yellow.svg)](https://github.com/astral-sh/ruff)
-![Security](https://img.shields.io/badge/security-CodeQL-blue.svg)
-
-<!-- Usage -->
-![Downloads](https://img.shields.io/pypi/dm/enterprise-docs.svg)
-![OS](https://img.shields.io/badge/os-Linux%20%7C%20macOS%20%7C%20Windows-blue.svg)
-[![Python Versions](https://img.shields.io/pypi/pyversions/enterprise-docs.svg)](https://pypi.org/project/enterprise-docs/)
-
-<!-- License -->
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-<!-- Docs -->
-[![Docs](https://img.shields.io/badge/docs-latest-brightgreen.svg)](https://your-docs-link)
-
-</div>
-
-## About
-
-`enterprise-docs` is a command-line tool that provides a comprehensive suite of professional, enterprise-grade documentation templates. It helps organizations and open-source projects maintain consistency, enforce standards, and streamline compliance across all their repositories. With a single command, you can sync everything from `CODE_OF_CONDUCT.md` to a `SECURITY_RESPONSE_PLAYBOOK.md`.
+![Build Status](https://img.shields.io/github/actions/workflow/status/dhruv13x/enterprise-docs/ci.yml?branch=main)
+![License](https://img.shields.io/badge/License-MIT-blue.svg)
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
+![Code Style](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)
+![Maintenance](https://img.shields.io/badge/Maintenance-Active-green)
 
 ---
 
-## 🚀 Quick Start
+## ⚡ Quick Start
 
 ### Prerequisites
-- Python 3.10+
+*   Python 3.10 or higher
 
-### Installation
+### Install
 ```bash
 pip install enterprise-docs
 ```
+*Or for development:*
+```bash
+pip install -e .
+```
 
-### Usage Example
-To see a list of all available documentation templates, run:
+### Run
+Check available templates:
 ```bash
 enterprise-docs list
 ```
 
-To sync all the templates to a local `./docs` directory, run:
+### Demo
+Get started in 5 minutes:
+
 ```bash
-enterprise-docs sync --to ./docs
+# 1. Install the tool
+pip install enterprise-docs
+
+# 2. List available templates
+enterprise-docs list
+
+# 3. Bootstrap your project with a contributing guide
+enterprise-docs sync CONTRIBUTING.md --to .
 ```
 
 ---
 
-## ✨ Key Features
+## ✨ Features
 
-- **God Level Template Library**: Access over 30 professional templates, including `SECURITY.md`, `GOVERNANCE.md`, and `CHANGELOG.md`.
-- **Single Source of Truth**: Standardize documentation across all your projects to ensure consistency and compliance.
-- **Effortless Synchronization**: A simple and intuitive CLI lets you sync all templates or specific ones with a single command.
-- **Custom Sources**: Use your own local directories as sources for templates, allowing you to manage custom template libraries.
-- **Automation-Friendly**: Designed to be easily integrated into your CI/CD pipelines, keeping your documentation perpetually up-to-date.
-- **Fully Extensible**: While `enterprise-docs` provides a robust set of templates, you can easily add your own to the collection.
+*   **Core Standardization**: Access 30+ standardized templates including `CONTRIBUTING.md`, `SECURITY.md`, `GOVERNANCE.md`, and more.
+*   **One-Command Automation**: Instantly `sync` documentation to your project root or `docs/` folder.
+*   **Compliance Ready**: Built-in templates for **Security Policy**, **Data Privacy**, **Risk Register**, and **Audit Checklists**.
+*   **Customizable**: Supports syncing from custom template directories via `--source`.
+*   **Rich Visuals**: Procedurally generated CLI banners using cryptographically-safe color palettes.
 
 ---
 
-## ⚙️ Configuration & Advanced Usage
+## 🛠️ Configuration
+
+### Environment Variables
+
+| Name | Description | Default | Required |
+| :--- | :--- | :--- | :--- |
+| `CREATE_DUMP_PALETTE` | Integer index (0-5) to force a specific color palette for the CLI banner. If unset, generates a procedural palette. | *Unset* | No |
 
 ### CLI Arguments
 
-The `enterprise-docs` CLI offers the following commands and options:
-
-| Command     | Description                                     |
-|-------------|-------------------------------------------------|
-| `list`      | Lists all available documentation templates.    |
-| `sync`      | Copies templates to a specified directory.      |
-| `version`   | Displays the installed version of the package.  |
-
-| Option     | Default  | Description                                        |
-|------------|----------|----------------------------------------------------|
-| `--to`     | `./docs` | The destination directory for the `sync` command.  |
-| `--source` | `None`   | (Optional) Custom source directory for templates.  |
-
-To sync a specific template:
-```bash
-enterprise-docs sync MyTemplate.md
-```
-
-To use a custom source directory:
-```bash
-enterprise-docs sync --source ./my-templates
-```
+| Argument | Description |
+| :--- | :--- |
+| `command` | Action to perform: `list`, `sync`, `version`. |
+| `template_name` | (Optional) Specific template file to sync (e.g., `CONTRIBUTING.md`). |
+| `--to` | Destination directory for synced files (default: `./docs`). |
+| `--source` | Path to a custom directory containing templates to use instead of the built-in set. |
 
 ---
 
 ## 🏗️ Architecture
 
-The project is structured as follows:
-
-```
+### Directory Tree
+```text
 .
-├── src
-│   └── enterprise_docs
-│       ├── templates
-│       │   ├── ARCHITECTURE.md
-│       │   ├── ... (and 30+ other templates)
-│       │   └── default_pyproject.toml
-│       ├── __init__.py
-│       ├── banner.py
-│       └── cli.py
-├── tests
-│   └── ...
-└── pyproject.toml
+├── src/
+│   └── enterprise_docs/
+│       ├── cli.py          # Entry point and argument parsing
+│       ├── banner.py       # Rich banner generation logic
+│       └── templates/      # 30+ Markdown and config templates
+├── tests/                  # Pytest suite (98% coverage)
+├── pyproject.toml          # Project metadata and dependencies
+└── README.md
 ```
 
-The core logic is contained in `cli.py`, which parses the command-line arguments and calls the appropriate functions. The `templates` directory contains all the markdown files that are copied by the `sync` command.
+### Data Flow
+1.  **User Input**: CLI commands (`list`, `sync`) are parsed by `argparse` in `cli.py`.
+2.  **Visuals**: `banner.py` generates a unique or fixed color palette and renders the logo using `rich`.
+3.  **Resolution**: The tool locates templates either in the internal `enterprise_docs.templates` package or a provided `--source` directory.
+4.  **Execution**: `shutil` performs file operations to copy selected templates to the target `--to` directory.
+
+---
+
+## 🐞 Troubleshooting
+
+| Issue | Solution |
+| :--- | :--- |
+| `Template 'X' not found` | Ensure the template name matches exactly (case-sensitive) with the output of `enterprise-docs list`. |
+| `Source directory 'X' not found` | Verify the path provided to `--source` exists and contains `.md` files. |
+| **Debug Mode** | The tool prints `✅` or `❌` icons for success/failure. Check standard output for specific error messages. |
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
+### Development Setup
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/dhruv13x/enterprise-docs.git
+    cd enterprise-docs
+    ```
+2.  **Install dev dependencies:**
+    ```bash
+    pip install -e ".[dev]"
+    ```
+3.  **Run tests:**
+    ```bash
+    pytest
+    ```
 
 ---
 
 ## 🗺️ Roadmap
 
-For a detailed view of our future plans, please see the [ROADMAP.md](ROADMAP.md) file.
+*   **Phase 1 (Complete)**: Core CLI, Sync, Custom Sources.
+*   **Phase 2**: Template Versioning, Dry-Run Mode.
+*   **Phase 3**: CI/CD Webhooks, Plugin System.
+*   **Phase 4**: AI-Powered Template Generation.
 
----
-
-## 🤝 Contributing & License
-
-Contributions are welcome! Please see the `CONTRIBUTING.md` file for more details.
-
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
+See [ROADMAP.md](ROADMAP.md) for the full vision.

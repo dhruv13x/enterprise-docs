@@ -6,7 +6,7 @@
 
 # 🧱 Enterprise Docs
 
-**A unified collection of professional, enterprise-grade documentation templates for your projects — enabling consistent governance, security, and compliance across all repositories.**
+**Unified enterprise documentation suite for Dhruv13x organization — providing policy, compliance, and automation templates for enterprise-grade Python projects.**
 
 <!-- Package Info -->
 [![PyPI version](https://img.shields.io/pypi/v/enterprise-docs.svg)](https://pypi.org/project/enterprise-docs/)
@@ -30,112 +30,140 @@
 <!-- License -->
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-<!-- Docs -->
-[![Docs](https://img.shields.io/badge/docs-latest-brightgreen.svg)](https://your-docs-link)
-
 </div>
 
-## About
+## ⚡ Quick Start
 
-`enterprise-docs` is a command-line tool that provides a comprehensive suite of professional, enterprise-grade documentation templates. It helps organizations and open-source projects maintain consistency, enforce standards, and streamline compliance across all their repositories. With a single command, you can sync everything from `CODE_OF_CONDUCT.md` to a `SECURITY_RESPONSE_PLAYBOOK.md`.
-
----
-
-## 🚀 Quick Start
+Get your documentation up to enterprise standards in less than 5 minutes.
 
 ### Prerequisites
-- Python 3.10+
+-   **Python 3.10** or higher
+-   `pip` or `poetry`
 
 ### Installation
 ```bash
 pip install enterprise-docs
 ```
 
-### Usage Example
-To see a list of all available documentation templates, run:
+### Run
+To immediately see what templates are available:
 ```bash
 enterprise-docs list
 ```
 
-To sync all the templates to a local `./docs` directory, run:
+### Demo
+Set up your security and governance policies with a single command:
 ```bash
+# Sync critical templates to your ./docs folder
+enterprise-docs sync SECURITY.md --to ./docs
+enterprise-docs sync GOVERNANCE.md --to ./docs
+
+# Or sync the entire suite
 enterprise-docs sync --to ./docs
 ```
 
 ---
 
-## ✨ Key Features
+## ✨ Features
 
-- **God Level Template Library**: Access over 30 professional templates, including `SECURITY.md`, `GOVERNANCE.md`, and `CHANGELOG.md`.
-- **Single Source of Truth**: Standardize documentation across all your projects to ensure consistency and compliance.
-- **Effortless Synchronization**: A simple and intuitive CLI lets you sync all templates or specific ones with a single command.
-- **Custom Sources**: Use your own local directories as sources for templates, allowing you to manage custom template libraries.
-- **Automation-Friendly**: Designed to be easily integrated into your CI/CD pipelines, keeping your documentation perpetually up-to-date.
-- **Fully Extensible**: While `enterprise-docs` provides a robust set of templates, you can easily add your own to the collection.
+**enterprise-docs** is more than just a template collection; it's a compliance engine.
+
+-   **Core Documentation**: Over 30+ industry-standard templates including `SECURITY.md`, `GOVERNANCE.md`, `CHANGELOG.md`, and `CONTRIBUTING.md`.
+-   **Automated Sync**: Keep your documentation standardized across hundreds of repositories with a single CLI command.
+-   **Custom Sources**: Point the tool to your own local template directory to enforce your organization's specific standards.
+-   **CI/CD Ready**: Designed to integrate into your build pipelines to ensure documentation presence and freshness.
+-   **Extensible Architecture**: Built with a plugin-ready structure to easily add new template types or validation logic.
 
 ---
 
-## ⚙️ Configuration & Advanced Usage
+## 🛠️ Configuration
+
+The tool works out-of-the-box with sensible defaults, but can be customized via CLI arguments.
 
 ### CLI Arguments
 
-The `enterprise-docs` CLI offers the following commands and options:
+| Command | Argument | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `list` | N/A | N/A | Lists all available documentation templates in the library. |
+| `sync` | `template_name` | All | Specific template file to sync (e.g., `SECURITY.md`). If omitted, syncs all. |
+| `sync` | `--to` | `./docs` | Destination directory where files will be copied. Created if it doesn't exist. |
+| `sync` | `--source` | Internal | Path to a custom directory containing your own markdown templates. |
+| `version`| N/A | N/A | Displays the current installed version of `enterprise-docs`. |
 
-| Command     | Description                                     |
-|-------------|-------------------------------------------------|
-| `list`      | Lists all available documentation templates.    |
-| `sync`      | Copies templates to a specified directory.      |
-| `version`   | Displays the installed version of the package.  |
-
-| Option     | Default  | Description                                        |
-|------------|----------|----------------------------------------------------|
-| `--to`     | `./docs` | The destination directory for the `sync` command.  |
-| `--source` | `None`   | (Optional) Custom source directory for templates.  |
-
-To sync a specific template:
-```bash
-enterprise-docs sync MyTemplate.md
-```
-
-To use a custom source directory:
-```bash
-enterprise-docs sync --source ./my-templates
-```
+### Environment Variables
+Currently, `enterprise-docs` relies primarily on CLI arguments for configuration. Future versions may support `ENTERPRISE_DOCS_HOME` for global configuration.
 
 ---
 
 ## 🏗️ Architecture
 
-The project is structured as follows:
+The project follows a clean `src` layout with `rich` for terminal output and `setuptools_scm` for versioning.
 
-```
-.
-├── src
-│   └── enterprise_docs
-│       ├── templates
-│       │   ├── ARCHITECTURE.md
-│       │   ├── ... (and 30+ other templates)
-│       │   └── default_pyproject.toml
-│       ├── __init__.py
-│       ├── banner.py
-│       └── cli.py
-├── tests
-│   └── ...
-└── pyproject.toml
+### Directory Tree
+```text
+src
+├── __init__.py
+└── enterprise_docs
+    ├── __init__.py
+    ├── banner.py           # Logo and banner rendering
+    ├── cli.py              # Main CLI entry point (argparse logic)
+    └── templates           # The "Gold Standard" template library
+        ├── ARCHITECTURE.md
+        ├── SECURITY.md
+        ├── GOVERNANCE.md
+        ├── ... (40+ files)
+        └── default_pyproject.toml
 ```
 
-The core logic is contained in `cli.py`, which parses the command-line arguments and calls the appropriate functions. The `templates` directory contains all the markdown files that are copied by the `sync` command.
+### Data Flow
+1.  **User invokes CLI**: `enterprise-docs sync --to ./docs`
+2.  **CLI Parsing**: `cli.py` detects the `sync` command and optional arguments.
+3.  **Resource Loading**: The tool identifies the source of templates (internal `importlib.resources` or external `--source`).
+4.  **Execution**: Files are filtered (if a specific name is requested) and copied to the target directory.
+5.  **Feedback**: Success or error messages are printed to the console using standard output.
+
+---
+
+## 🐞 Troubleshooting
+
+| Error Message | Possible Cause | Solution |
+| :--- | :--- | :--- |
+| `❌ Template 'X' not found` | Typo in template name or template does not exist. | Run `enterprise-docs list` to see valid names. Check spelling carefully. |
+| `❌ Source directory 'X' not found` | The path provided to `--source` does not exist. | Verify the path is absolute or correctly relative to your current working directory. |
+| `ModuleNotFoundError` | Package not installed in the current environment. | Ensure you are in the correct virtual environment and run `pip install .` |
+
+### Debug Mode
+If you encounter unexpected behavior, ensure you are running the latest version:
+```bash
+enterprise-docs version
+```
+Issues can be reported on our [GitHub Issues](https://github.com/dhruv13x/enterprise-docs/issues) page.
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions to expand the template library or improve the CLI!
+
+1.  **Fork** the repository.
+2.  **Clone** your fork locally.
+3.  **Install** dependencies: `pip install -e ".[dev]"`
+4.  **Run Tests**: `pytest`
+5.  **Submit** a Pull Request.
+
+Please review the `CONTRIBUTING.md` file (available via `enterprise-docs sync CONTRIBUTING.md`) for detailed guidelines.
 
 ---
 
 ## 🗺️ Roadmap
 
-For a detailed view of our future plans, please see the [ROADMAP.md](ROADMAP.md) file.
+We have exciting plans for the future of `enterprise-docs`. Check out our [ROADMAP.md](ROADMAP.md) for details on upcoming features like:
+-   Template variable substitution (Jinja2 support).
+-   Interactive setup wizard (`init` command).
+-   Validation checks for existing documentation.
 
 ---
 
-## 🤝 Contributing & License
-
-Contributions are welcome! Please see the `CONTRIBUTING.md` file for more details.
-
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
+<div align="center">
+  <sub>Built with ❤️ by <a href="https://github.com/dhruv13x">Dhruv13x</a></sub>
+</div>

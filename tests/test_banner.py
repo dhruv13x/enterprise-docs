@@ -1,9 +1,6 @@
 # tests/test_banner.py
 
 
-import pytest
-import math
-from unittest.mock import MagicMock
 from enterprise_docs import banner
 
 def test_lerp():

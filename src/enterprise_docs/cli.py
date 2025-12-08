@@ -3,6 +3,7 @@
 import argparse
 import shutil
 from pathlib import Path
+from typing import Optional, Union, Any
 import importlib.resources as resources
 from importlib.metadata import version, PackageNotFoundError
 from .banner import print_logo
@@ -16,11 +17,12 @@ def list_docs():
             print(f.name)
 
 
-def copy_docs(destination: str, template_name: str = None, source: str = None):
+def copy_docs(destination: str, template_name: Optional[str] = None, source: Optional[str] = None):
     """Copy documentation templates to the specified directory."""
     dest = Path(destination)
     dest.mkdir(parents=True, exist_ok=True)
 
+    src: Union[Path, Any]
     if source:
         src = Path(source)
         if not src.exists():
@@ -32,11 +34,11 @@ def copy_docs(destination: str, template_name: str = None, source: str = None):
     found = False
 
     for f in src.iterdir():
-        if f.suffix == ".md":
+        if f.suffix == ".md":  # type: ignore
             if template_name and f.name != template_name:
                 continue
 
-            shutil.copy(f, dest / f.name)
+            shutil.copy(f, dest / f.name)  # type: ignore
             found = True
             if template_name:
                 print(f"✅ Copied {f.name} to {dest.resolve()}")

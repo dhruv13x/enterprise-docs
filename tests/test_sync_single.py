@@ -1,4 +1,3 @@
-import pytest
 from enterprise_docs import cli
 
 def test_sync_single_template(mock_files_setup, mock_shutil, mock_path, capsys, mocker):

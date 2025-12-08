@@ -1,10 +1,6 @@
 # tests/test_cli.py
 
-import pytest
-import shutil
-import argparse
-from pathlib import Path
-from unittest.mock import MagicMock, call
+from unittest.mock import MagicMock
 from enterprise_docs import cli
 
 # Fixtures are now in conftest.py
@@ -127,6 +123,7 @@ def test_main_default_args(mocker):
 
     cli.main()
 
+    mock_print_logo.assert_called_once()
     mock_copy_docs.assert_called_once()
     args, _ = mock_copy_docs.call_args
     assert args[0] == "./docs"

@@ -1,57 +1,70 @@
-# 🗺️ Enterprise Docs Roadmap
+# 🗺️ Strategic Roadmap V3.0
 
-This document outlines the strategic vision for `enterprise-docs`, from immediate priorities to long-term ambitions. Our goal is to evolve from a powerful template manager into an indispensable ecosystem for enterprise-grade documentation.
-
----
-
-## Phase 1: Foundation (Q1)
-**Focus**: Core functionality, stability, and essential features that provide immediate value and a solid base for future development.
-
-- [x] Core CLI with `list`, `sync`, and `version` commands.
-- [x] A comprehensive set of over 30 documentation templates.
-- [x] **Sync Individual Templates**: Allow users to sync a single template instead of the entire library.
-- [x] **Custom Template Directories**: Enable users to specify their own directories as a source for custom templates.
-- [ ] **Interactive Mode**: An interactive mode for the `sync` command that allows users to select which templates to sync.
-- [ ] **Configuration File**: Introduce a `.enterprisedocsrc` file for project-level configuration of `enterprise-docs`.
-- [ ] **Improved Error Handling**: More robust error handling and reporting for CLI commands.
+This document outlines the strategic vision for `enterprise-docs`, balancing **Innovation**, **Stability**, and **Debt**. It serves as a living document to guide development from core stability to market leadership.
 
 ---
 
-## Phase 2: The Standard (Q2)
-**Focus**: Achieving feature parity with top-tier documentation tools, enhancing user experience, and providing more control over the documentation.
+## 🏁 Phase 0: The Core (Stability & Debt)
+**Goal**: Solid foundation. Ensure the codebase is robust, tested, and maintainable before scaling features.
 
-- [ ] **Template Versioning**: Allow users to sync specific versions of templates.
-- [ ] **Dry-Run Mode**: A `--dry-run` option for the `sync` command to show what files would be created or overwritten.
-- [ ] **Additional Output Formats**: Support for JSON and YAML output for the `list` command.
-- [ ] **Automatic Updates**: A mechanism to automatically check for and notify users about new and updated templates.
-- [ ] **Detailed Template Information**: A `docs info <template_name>` command to display metadata about a template.
-
----
-
-## Phase 3: The Ecosystem (Q3-Q4)
-**Focus**: Integrations, extensibility, and transforming `enterprise-docs` into a platform for documentation automation.
-
-- [ ] **Webhooks for CI/CD**: Native integration with popular CI/CD platforms (e.g., GitHub Actions, GitLab CI) to trigger documentation updates.
-- [ ] **Plugin System**: A plugin architecture that allows developers to create and share their own template packs.
-- [ ] **API Exposure**: A public API for programmatic access to `enterprise-docs` functionality.
-- [ ] **SDK Generation**: Auto-generated SDKs (Python, Go, etc.) for the public API.
-- [ ] **Pre-commit Hook**: A pre-commit hook to ensure that project documentation is up-to-date.
+- [x] **Testing**: Maintain coverage > 95%. `[Stability]` `(S)`
+    - *Status*: Verified at 98%.
+- [x] **CI/CD**: Implement comprehensive pipeline. `[Debt]` `(M)`
+    - *Tasks*: Add GitHub Actions for Linting (`ruff`), Type Checking (`mypy`), and Testing on PRs.
+- [x] **Documentation**: Comprehensive README. `[Feat]` `(S)`
+    - *Status*: Gold Standard structure implemented.
+- [x] **Refactoring**: Pay down critical technical debt. `[Debt]` `(S)`
+    - *Tasks*: Remove unused imports, fix static analysis errors.
 
 ---
 
-## Phase 4: The Vision (GOD LEVEL)
-**Focus**: Ambitious, forward-thinking features that push the boundaries of what's possible with documentation automation.
+## 🚀 Phase 1: The Standard (Feature Parity)
+**Goal**: Competitiveness. Achieve feature parity with standard documentation tools and enhance user experience.
+*Dependencies*: Requires Phase 0 Stability.
 
-- [ ] **AI-Powered Template Generation**: Utilize AI to generate new documentation templates based on project context and industry best practices.
-- [ ] **Automated Documentation Audits**: A service that scans your repositories and provides a compliance score based on your documentation.
-- [ ] **Integration with Project Management Tools**: Seamless integration with tools like Jira and Asana to link documentation to tasks and epics.
-- [ ] **Real-time Collaboration**: A web-based interface for real-time collaboration on documentation templates.
+- [ ] **UX**: CLI improvements & Error messages. `[Feat]` `(M)`
+    - *Details*: Interactive mode, better error reporting.
+- [ ] **Config**: Robust settings management. `[Feat]` `(M)`
+    - *Details*: Support `.enterprisedocsrc` or `pyproject.toml` configuration.
+- [ ] **Performance**: Async & Caching. `[Feat]` `(L)`
+    - *Risk*: Low. Optimize template loading and generation.
 
 ---
 
-## The Sandbox (Experimental)
-**Focus**: Creative, out-of-the-box ideas that could redefine the user experience and set the project apart.
+## 🔌 Phase 2: The Ecosystem (Integration)
+**Goal**: Interoperability. transform `enterprise-docs` into an extensible platform.
+*Dependencies*: Requires Phase 1 (API design freeze).
 
-- [ ] **Gamified Documentation**: A system that rewards users for creating and maintaining high-quality documentation.
-- [ ] **Template Marketplace**: A community-driven marketplace for sharing and discovering new documentation templates.
-- [ ] **"Docu-Bot" Assistant**: A chatbot that can answer questions about your project's documentation and help you find the right templates.
+- [ ] **API**: REST/GraphQL interfaces. `[Feat]` `(XL)`
+    - *Risk*: Medium. Allow programmatic access to documentation generation.
+- [ ] **Plugins**: Extension system. `[Feat]` `(L)`
+    - *Risk*: Medium. Allow community-driven template packs.
+
+---
+
+## 🔮 Phase 3: The Vision (Innovation)
+**Goal**: Market Leader. Push boundaries with AI and Cloud integration.
+*Dependencies*: Requires Phase 2.
+
+- [ ] **AI**: LLM Integration. `[Feat]` `(XL)`
+    - *Risk*: High (R&D). Context-aware documentation generation.
+- [ ] **Cloud**: K8s/Docker support. `[Feat]` `(L)`
+    - *Risk*: High. Native cloud-native deployment documentation templates.
+
+---
+
+## 📊 Matrix & Legend
+
+### Priority Matrix
+| Impact \ Effort | Low | Medium | High |
+| :--- | :--- | :--- | :--- |
+| **High** | **Phase 0/1** (Quick Wins) | **Phase 1** (Strategic) | **Phase 2/3** (Moonshots) |
+| **Medium** | **Phase 0** (Maintenance) | **Phase 1** (Enhancements) | **Defer** |
+| **Low** | **Deprecate** | **Ignore** | **Ignore** |
+
+### Legend
+- `[Feat]`: New Feature
+- `[Bug]`: Bug Fix
+- `[Debt]`: Technical Debt / Maintenance
+- `[Stability]`: Testing & Reliability
+- `(S/M/L/XL)`: T-Shirt Size Estimate
